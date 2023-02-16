@@ -1,0 +1,16 @@
+.cardBorder{
+    border:2px black solid;
+    border-radius: 25px;
+    text-align: center;
+}
+.containerCard{
+    justify-content: space-between;
+    row-gap: 50px;
+    margin: 0 auto;
+    max-width: 1400px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.imgCard{
+    border-radius: 24px;
+}
