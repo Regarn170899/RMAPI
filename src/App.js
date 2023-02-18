@@ -2,14 +2,13 @@ import axios from "axios";
 import './App.css';
 import {useEffect, useState} from "react";
 import Characters from "./Components/Characters";
-import styles from './App.css'
-import Pagination from "./Components/Pagination";
 function App() {
   const [characters,setCharacters]=useState([])
   const [loading, setLoading]=useState(false)
   const [currentPage,setCurrentPage]=useState(1)
   const [charactersOnPage]=useState(10)
   useEffect(()=>{
+    // testing pull pull request
     const getCharacters=async ()=>{
       setLoading(true)
       try {
