@@ -1,7 +1,9 @@
 .cardBorder{
-    border:2px black solid;
+    border:3px black solid;
     border-radius: 25px;
     text-align: center;
+    background-color: dimgray;
+    color: aliceblue;
 }
 .containerCard{
     justify-content: space-between;
@@ -12,5 +14,11 @@
     flex-wrap: wrap;
 }
 .imgCard{
-    border-radius: 24px;
+    border-radius: 22px;
+}
+p{
+    max-width: 290px;
+}
+h3{
+    max-width: 290px;
 }
