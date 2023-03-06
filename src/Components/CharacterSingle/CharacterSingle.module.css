@@ -1,0 +1,17 @@
+.singleCharContainer{
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+
+}
+.singleCharCard{
+
+    border:3px black solid;
+    border-radius: 25px;
+    text-align: center;
+    background-color: dimgray;
+    color: aliceblue;
+}
+.imgCard{
+    border-radius: 22px;
+}

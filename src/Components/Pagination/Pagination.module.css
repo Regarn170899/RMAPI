@@ -1,0 +1,47 @@
+.textWhite{
+    color: white;
+    text-decoration: none;
+}
+.pagination{
+    list-style-type:none;
+    align-items: center;
+    padding-top: 20px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    max-width: 600px;
+}
+.paginationBtn{
+    cursor: pointer;
+    padding-top: 15px;
+    text-align: center;
+    width: 50px;
+    height: 35px;
+    background-color: dimgray;
+    color: white;
+    border-radius: 20px;
+    border: 0;
+    margin-left:15px;
+}
+.paginationBtn:hover{
+    background-color: slategrey;
+}
+
+.pageLink{
+    list-style-type:none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    background-color: dimgray;
+    color: white;
+}
+.pageLink:focus{
+    list-style-type:none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    background-color: slategrey;
+    color: white;
+}

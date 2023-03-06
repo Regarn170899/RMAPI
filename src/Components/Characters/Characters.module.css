@@ -1,17 +1,22 @@
 .cardBorder{
+    text-decoration: none;
     border:3px black solid;
     border-radius: 25px;
     text-align: center;
     background-color: dimgray;
     color: aliceblue;
 }
+.cardBorder:hover{
+    color: aliceblue;
+}
 .containerCard{
-    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
     row-gap: 50px;
     margin: 0 auto;
     max-width: 1400px;
-    display: flex;
-    flex-wrap: wrap;
+
 }
 .imgCard{
     border-radius: 22px;
