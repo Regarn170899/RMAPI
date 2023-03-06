@@ -1,69 +1,116 @@
 import axios from "axios";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap";
 import React, { useEffect, useState } from "react";
 import Characters from "./Components/Characters/Characters";
 import Filters from "./Components/Filters/Filters";
 import Pagination from "./Components/Pagination/Pagination";
 import Search from "./Components/Search/Search";
 import useDebouncedFunction from "./hooks/useDebouncedFunction";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CharacterSingle from "./Components/CharacterSingle/CharacterSingle";
 
 function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/:id" element={<CharacterSingle />} />
+      </Routes>
+    </Router>
+  );
+}
+
+const Home = () => {
   const [characters, setCharacters] = useState([]);
   const [info, setInfo] = useState([]);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [like, setLike] = useState(false);
 
   const api = `https://rickandmortyapi.com/api/character/?page=${page}&name=${search}`;
-  const handleLike = (id) => {
-    if (!like) {
-      setLike(true);
-    } else {
-      setLike(false);
-    }
-  };
+
   const handleSearch = useDebouncedFunction((e) => {
     setPage(1);
     setSearch(e.target.value);
   }, 500);
 
   useEffect(() => {
+    const hasLikesInLocalStorage =
+      localStorage.getItem("likedCharsIds") &&
+      Array.isArray(JSON.parse(localStorage.getItem("likedCharsIds")));
+    if (hasLikesInLocalStorage) {
+      return;
+    }
+    localStorage.setItem("likedCharsIds", JSON.stringify([]));
+  }, []);
+
+  useEffect(() => {
     const getCharacters = async () => {
-      setLoading(true);
       try {
         const res = await axios.get(api);
-        console.log(res, "res");
-        setCharacters(res.data.results);
+        const likedCharsIds = JSON.parse(localStorage.getItem("likedCharsIds"));
         setInfo(res.data.info);
-        console.log(res.data.results, "chars");
-        setLoading(false);
+        if (likedCharsIds.length > 0) {
+          return setCharacters(
+            res.data.results.map((character) => {
+              if (likedCharsIds.includes(character.id)) {
+                return {
+                  ...character,
+                  like: true,
+                };
+              }
+              return {
+                ...character,
+                like: false,
+              };
+            })
+          );
+        }
+        setCharacters(
+          res.data.results.map((charLike) => {
+            return { ...charLike, like: false };
+          })
+        );
       } catch (e) {
         console.error(e);
         setCharacters([]);
-      } finally {
-        setLoading(false);
       }
     };
     getCharacters();
   }, [api]);
 
+  const updateLikeListInLs = (id) => {
+    const likedCharsIds = JSON.parse(localStorage.getItem("likedCharsIds"));
+    if (likedCharsIds.includes(id)) {
+      return localStorage.setItem(
+        "likedCharsIds",
+        JSON.stringify(likedCharsIds.filter((charId) => charId !== id))
+      );
+    }
+    likedCharsIds.push(id);
+    localStorage.setItem("likedCharsIds", JSON.stringify(likedCharsIds));
+  };
+  const updatedCharsLikeProperty = (id) => {
+    const updatedCharacters = characters.map((character) => {
+      if (character.id === id) {
+        return { ...character, like: !character.like };
+      }
+      return character;
+    });
+    setCharacters(updatedCharacters);
+    updateLikeListInLs(id);
+  };
+
   return (
     <div className="App">
-      <h1 className="text-center my-4">Rick and Morty</h1>
+      <h1 className="projectName">Rick and Morty</h1>
       <Search search={search} setPage={setPage} onSearch={handleSearch} />
-      <Filters />
       <div className="container">
         <div className="row">
           <div className="col-12">
             {characters.length !== 0 ? (
               <Characters
-                like={like}
-                handleLike={handleLike}
+                handleLike={updatedCharsLikeProperty}
                 characters={characters}
-                loading={loading}
               />
             ) : (
               <h2>Loading...</h2>
@@ -74,6 +121,6 @@ function App() {
       <Pagination page={page} info={info} setPage={setPage} />
     </div>
   );
-}
+};
 
 export default App;

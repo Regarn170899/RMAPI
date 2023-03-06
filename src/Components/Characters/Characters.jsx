@@ -1,11 +1,16 @@
 import React from "react";
 import styles from "./Characters.module.css";
+import { Link } from "react-router-dom";
 
-const Characters = ({ handleLike, characters, like }) => {
+const Characters = ({ handleLike, characters }) => {
   return (
     <div className={styles.containerCard}>
       {characters.map((character) => (
-        <div key={character.id} className={styles.cardBorder}>
+        <Link
+          to={`${character.id}`}
+          key={character.id}
+          className={styles.cardBorder}
+        >
           <div>
             <img
               className={styles.imgCard}
@@ -16,9 +21,17 @@ const Characters = ({ handleLike, characters, like }) => {
           <h3>{character.name}</h3>
           <p>{character.status}</p>
           <p>{character.id}</p>
-          <p>Last location: {character.location.name}</p>
-          <button onClick={handleLike}>{like ? "unLike" : "Like"}</button>
-        </div>
+          <p>Last location: {character?.location.name}</p>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleLike(character.id);
+            }}
+          >
+            {character.like ? "unLike" : "Like"}
+          </button>
+        </Link>
       ))}
     </div>
   );
