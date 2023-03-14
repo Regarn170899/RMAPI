@@ -1,24 +1,53 @@
 import React from "react";
-import ReactPaginate from "react-paginate";
 import styles from "./Pagination.module.css";
-const Pagination = ({ setPage, page, info }) => {
+const Pagination = ({ setPage, page, lastPage }) => {
+  const nextPage = (page) => {
+    if (page <= lastPage) {
+      setPage(page + 1);
+    } else {
+      setPage(lastPage);
+    }
+  };
+  const prePage = (page) => {
+    if (page >= 1) {
+      setPage(page - 1);
+    } else {
+      setPage(1);
+    }
+  };
+
+  const pagesCount = Array.from(
+    { length: lastPage },
+    (value, index) => index + 1
+  );
   return (
-    <ReactPaginate
-      className={styles.pagination}
-      onPageChange={(data) => {
-        setPage(data.selected + 1);
-      }}
-      activeClassName={styles.active}
-      nextLabel="Next"
-      previousLabel="Prev"
-      previousClassName={styles.paginationBtn}
-      nextClassName={styles.paginationBtn}
-      nextLinkClassName={styles.textWhite}
-      previousLinkClassName={styles.textWhite}
-      pageClassName={styles.pageItem}
-      pageLinkClassName={styles.pageLink}
-      pageCount={info?.pages}
-    />
+    <div className={styles.paginationContainer}>
+      <button
+        onClick={() => {
+          prePage(page);
+        }}
+      >
+        Prev
+      </button>
+      {pagesCount.map((pag) => (
+        <div
+          key={pag}
+          onClick={() => {
+            setPage(pag);
+          }}
+          className={styles.pageLink}
+        >
+          {pag}
+        </div>
+      ))}
+      <button
+        onClick={() => {
+          nextPage(page);
+        }}
+      >
+        Next
+      </button>
+    </div>
   );
 };
 

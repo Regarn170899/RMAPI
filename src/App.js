@@ -25,6 +25,7 @@ const Home = () => {
   const [info, setInfo] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [lastPage, setLastPage] = useState();
 
   const api = `https://rickandmortyapi.com/api/character/?page=${page}&name=${search}`;
 
@@ -49,6 +50,7 @@ const Home = () => {
         const res = await axios.get(api);
         const likedCharsIds = JSON.parse(localStorage.getItem("likedCharsIds"));
         setInfo(res.data.info);
+        setLastPage(res.data.info.pages);
         if (likedCharsIds.length > 0) {
           return setCharacters(
             res.data.results.map((character) => {
@@ -118,7 +120,12 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Pagination page={page} info={info} setPage={setPage} />
+      <Pagination
+        lastPage={lastPage}
+        page={page}
+        info={info}
+        setPage={setPage}
+      />
     </div>
   );
 };

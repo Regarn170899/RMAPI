@@ -2,14 +2,9 @@
     color: white;
     text-decoration: none;
 }
-.pagination{
-    list-style-type:none;
-    align-items: center;
-    padding-top: 20px;
-    margin: 0 auto;
+.paginationContainer{
     display: flex;
-    justify-content: space-between;
-    max-width: 600px;
+    justify-content: center;
 }
 .paginationBtn{
     cursor: pointer;
